@@ -1,0 +1,16 @@
+C:\Users\denzi\source\repos\ru.TechDevelop.Orlov\ru.TechDevelop.Orlov\bin\Debug\net5.0\ru.TechDevelop.Orlov.exe
+C:\Users\denzi\source\repos\ru.TechDevelop.Orlov\ru.TechDevelop.Orlov\bin\Debug\net5.0\ru.TechDevelop.Orlov.deps.json
+C:\Users\denzi\source\repos\ru.TechDevelop.Orlov\ru.TechDevelop.Orlov\bin\Debug\net5.0\ru.TechDevelop.Orlov.runtimeconfig.json
+C:\Users\denzi\source\repos\ru.TechDevelop.Orlov\ru.TechDevelop.Orlov\bin\Debug\net5.0\ru.TechDevelop.Orlov.runtimeconfig.dev.json
+C:\Users\denzi\source\repos\ru.TechDevelop.Orlov\ru.TechDevelop.Orlov\bin\Debug\net5.0\ru.TechDevelop.Orlov.dll
+C:\Users\denzi\source\repos\ru.TechDevelop.Orlov\ru.TechDevelop.Orlov\bin\Debug\net5.0\ref\ru.TechDevelop.Orlov.dll
+C:\Users\denzi\source\repos\ru.TechDevelop.Orlov\ru.TechDevelop.Orlov\bin\Debug\net5.0\ru.TechDevelop.Orlov.pdb
+C:\Users\denzi\source\repos\ru.TechDevelop.Orlov\ru.TechDevelop.Orlov\obj\Debug\net5.0\ru.TechDevelop.Orlov.csproj.AssemblyReference.cache
+C:\Users\denzi\source\repos\ru.TechDevelop.Orlov\ru.TechDevelop.Orlov\obj\Debug\net5.0\ru.TechDevelop.Orlov.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\denzi\source\repos\ru.TechDevelop.Orlov\ru.TechDevelop.Orlov\obj\Debug\net5.0\ru.TechDevelop.Orlov.AssemblyInfoInputs.cache
+C:\Users\denzi\source\repos\ru.TechDevelop.Orlov\ru.TechDevelop.Orlov\obj\Debug\net5.0\ru.TechDevelop.Orlov.AssemblyInfo.cs
+C:\Users\denzi\source\repos\ru.TechDevelop.Orlov\ru.TechDevelop.Orlov\obj\Debug\net5.0\ru.TechDevelop.Orlov.csproj.CoreCompileInputs.cache
+C:\Users\denzi\source\repos\ru.TechDevelop.Orlov\ru.TechDevelop.Orlov\obj\Debug\net5.0\ru.TechDevelop.Orlov.dll
+C:\Users\denzi\source\repos\ru.TechDevelop.Orlov\ru.TechDevelop.Orlov\obj\Debug\net5.0\ref\ru.TechDevelop.Orlov.dll
+C:\Users\denzi\source\repos\ru.TechDevelop.Orlov\ru.TechDevelop.Orlov\obj\Debug\net5.0\ru.TechDevelop.Orlov.pdb
+C:\Users\denzi\source\repos\ru.TechDevelop.Orlov\ru.TechDevelop.Orlov\obj\Debug\net5.0\ru.TechDevelop.Orlov.genruntimeconfig.cache
