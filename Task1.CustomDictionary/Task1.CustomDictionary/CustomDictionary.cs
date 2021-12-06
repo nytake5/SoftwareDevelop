@@ -1,26 +1,29 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Task1.CustomDictionary
 {
-    public class CustomDictionary<TKey, TValue> : ICollection<KeyValuePair<TKey, TValue>>, IEnumerable<KeyValuePair<TKey, TValue>>, IEnumerable
+    public class CustomDictionary<TKey, TValue> : IDictionary<TKey, TValue>, ICollection<KeyValuePair<TKey, TValue>>, IEnumerable<KeyValuePair<TKey, TValue>>, IEnumerable
     {
-        private HashSet<TKey> _keys;
+        private List<TKey> _keys;
         private List<TValue> _values;
-        private List<LinkedList<KeyValuePair<TKey, TValue>>> _lst;
-        private int _capacity = 4;
+        private LinkedList<KeyValuePair<TKey, TValue>>[] _lst;
+        private int _capacity = 16;
         private int _count = 0;
-        private List<int> _hashCode;
         public CustomDictionary()
         {
-            _keys = new HashSet<TKey>();
+            _keys = new List<TKey>();
             _values = new List<TValue>();
-            _lst = new List<LinkedList<KeyValuePair<TKey, TValue>>>();
-            _hashCode = new List<int>();
+            _lst = new LinkedList<KeyValuePair<TKey, TValue>>[_capacity];
+            for (int i = 0; i < _capacity; i++)
+            {
+                _lst[i] = new LinkedList<KeyValuePair<TKey, TValue>>();
+            }
         }
         public int Count => _count;
 
@@ -28,13 +31,68 @@ namespace Task1.CustomDictionary
 
         public object Current => throw new NotImplementedException();
 
+        public ICollection<TKey> Keys => _keys;
+
+        public ICollection<TValue> Values => _values;
+
+        public TValue this[TKey key]
+        {
+            get
+            {
+                int hash = Math.Abs(key.GetHashCode()) % _capacity;
+                if (_lst[hash].Count != 0)
+                {
+                    foreach (var item in _lst[hash])
+                    {
+                        if (item.Key.Equals(key))
+                        {
+                            return item.Value;
+                        }
+                    }
+                }
+                return (TValue)default;
+            }
+            set
+            {
+                int hash = Math.Abs(key.GetHashCode()) % _capacity;
+                if (_lst[hash].Count != 0)
+                {
+                    var temp = new KeyValuePair<TKey, TValue>();
+                    foreach (var item in _lst[hash])
+                    {
+                        if (item.Key.Equals(key))
+                        {
+                            temp = item;
+                        }
+                    }
+                    _lst[hash].Remove(temp);
+                    _lst[hash].AddLast(new KeyValuePair<TKey, TValue>(temp.Key, value));
+                }
+            }
+        }
+
         public void Add(TKey key, TValue value)
         {
-            int hash = Math.Abs(key.GetHashCode());
+            int hash = Math.Abs(key.GetHashCode()) % _capacity;
             
-            if (_count >= _capacity)
+            if (_capacity - _count == 0)
             {
                 _capacity *= 2;
+                LinkedList<KeyValuePair<TKey, TValue>>[] temp = new LinkedList<KeyValuePair<TKey, TValue>>[_capacity];
+                for (int i = 0; i < _capacity; i++)
+                {
+                    temp[i] = new LinkedList<KeyValuePair<TKey, TValue>>();
+                }
+                foreach (var linkList in _lst)
+                {
+                    foreach (var item in linkList)
+                    {
+                        int hashLoc = Math.Abs(item.Key.GetHashCode()) % _capacity;
+                        temp[hashLoc].AddLast(item);
+                    }
+                }
+                hash = Math.Abs(key.GetHashCode()) % _capacity;
+                _lst = temp;
             }
             if (_keys.Contains(key))
             {
@@ -43,94 +101,39 @@ namespace Task1.CustomDictionary
             else
             {
                 var temp = new KeyValuePair<TKey, TValue>(key, value);
+                _lst[hash].AddLast(temp);
                 _keys.Add(key);
                 _values.Add(value);
                 _count++;
-                int index = _hashCode.IndexOf(hash);
-                if (index == -1)
-                {
-                    var tmp = new LinkedList<KeyValuePair<TKey, TValue>>();
-                    tmp.AddLast(temp);
-                    _lst.Add(tmp);
-                    _hashCode.Add(hash);
-                }
-                else
-                {
-                    _lst[index].AddLast(temp);
-                }
             }
         }
 
         public void Add(KeyValuePair<TKey, TValue> item)
         {
-            int hash = Math.Abs(item.Key.GetHashCode());
-            if (_count >= _capacity)
-            {
-                _capacity *= 2;
-            }
-            if (_keys.Contains(item.Key))
-            {
-                throw new Exception("Dictionory alredy have this key!");
-            }
-            else
-            {
-                _keys.Add(item.Key);
-                _values.Add(item.Value);
-                _count++;
-                int index = _hashCode.IndexOf(hash);
-                if (index == -1)
-                {
-                    var tmp = new LinkedList<KeyValuePair<TKey, TValue>>();
-                    tmp.AddLast(item);
-                    _lst.Add(tmp);
-                    _hashCode.Add(hash);
-                }
-                else
-                {
-                    _lst[index].AddLast(item);
-                }
-            }
+            Add(item.Key, item.Value);
         }
 
         public void Clear()
         {
-            _keys.Clear(); 
-            _values.Clear();
-            _lst.Clear();
-            _hashCode.Clear();
-            _count = 0;
+            _keys = new List<TKey>();
+            _values = new List<TValue>();
             _capacity = 4;
+            _lst = new LinkedList<KeyValuePair<TKey, TValue>>[4];
+            _count = 0;
+            
         }
 
         public bool Contains(KeyValuePair<TKey, TValue> pair)
         {
-            foreach (var item in _lst)
+            int hash = Math.Abs(pair.Key.GetHashCode()) % _capacity;
+            if (_lst[hash].Count != 0)
             {
-                if (item.Contains(pair))
-                {
-                    return true;
-                }
+                return true;
             }
             return false;
         }
 
-        public bool Contains(TKey item)
-        {
-            return _keys.Contains(item);
-        }
 
-        public bool Contains(TValue item)
-        {
-            return _values.Contains(item);
-        }
-        public List<TKey> GetKeys()
-        {
-            return _keys.ToList<TKey>();
-        }
-        public List<TValue> GetValues()
-        {
-            return _values;
-        }
         public void CopyTo(CustomDictionary<TKey, TValue> cusDic, int arrayIndex)
         {
             cusDic = new CustomDictionary<TKey, TValue>();
@@ -161,6 +164,7 @@ namespace Task1.CustomDictionary
                     {
                         array[j] = item1;
                     }
+                    j++;
                 }
                 i += item.Count;
             }
@@ -168,7 +172,7 @@ namespace Task1.CustomDictionary
 
         public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
         {
-            for (int i = 0; i < _count; i++)
+            for (int i = 0; i < _capacity; i++)
             {
                 foreach (var item in _lst[i])
                 {
@@ -179,40 +183,77 @@ namespace Task1.CustomDictionary
 
         public bool Remove(KeyValuePair<TKey, TValue> pair)
         {
-            bool flag = false;
-            var temp = new LinkedList<KeyValuePair<TKey, TValue>>(); ;
-            foreach (var item in _lst)
+            int hash = Math.Abs(pair.Key.GetHashCode()) % _capacity;
+            if (_lst[hash].Count == 0)
             {
-                if (item.Contains(pair))
-                {
-                    flag = true;
-                    temp = item;
-                }
+                return false;
             }
-            if (flag)
+            else
             {
-                if (temp.Count == 1)
-                {
-                    int index = _lst.IndexOf(temp);
-                    _lst.Remove(temp);
-                    _keys.Remove(pair.Key);
-                    _values.Remove(pair.Value);
-                    _hashCode.RemoveAt(index);
-                }
-                else
-                {
-                    temp.Remove(pair);
-                    _keys.Remove(pair.Key);
-                    _values.Remove(pair.Value);
-                }
-                return true;
+                return _lst[hash].Remove(pair);
             }
-            return false;
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
+        }
+
+        public bool ContainsKey(TKey key)
+        {
+            return _keys.Contains(key);
+        }
+
+        public bool Remove(TKey key)
+        {
+            int hash = Math.Abs(key.GetHashCode()) % _capacity;
+            if (_lst[hash].Count == 0)
+            {
+                return false;
+            }
+            else
+            {
+                KeyValuePair<TKey, TValue> temp = default;
+                foreach (var item in _lst[hash])
+                {
+                    if (item.Key.Equals(key))
+                    {
+                        temp = item;
+                    }
+                }
+                if (temp.Equals((KeyValuePair<TKey, TValue>)default))
+                {
+                    return false;
+                }
+                else
+                {
+                    _lst[hash].Remove(temp);
+                }
+                return true;
+            }
+        }
+
+        public bool TryGetValue(TKey key, [MaybeNullWhen(false)] out TValue value)
+        {
+            int hash = Math.Abs(key.GetHashCode()) % _capacity;
+            if (_lst[hash].Count == 0)
+            {
+                value = default;
+                return false;
+            }
+            else
+            {
+                foreach (var item in _lst[hash])
+                {
+                    if (item.Key.Equals(key))
+                    {
+                        value = item.Value;
+                        return true;
+                    }
+                }
+            }
+            value = (TValue)default;
+            return false;
         }
     }
 }
