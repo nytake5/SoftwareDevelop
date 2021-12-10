@@ -13,14 +13,13 @@ namespace Task1.CustomDictionary
         private List<TKey> _keys;
         private List<TValue> _values;
         private LinkedList<KeyValuePair<TKey, TValue>>[] _lst;
-        private int _capacity = 16;
         private int _count = 0;
         public CustomDictionary()
         {
             _keys = new List<TKey>();
             _values = new List<TValue>();
-            _lst = new LinkedList<KeyValuePair<TKey, TValue>>[_capacity];
-            for (int i = 0; i < _capacity; i++)
+            _lst = new LinkedList<KeyValuePair<TKey, TValue>>[4];
+            for (int i = 0; i < _lst.Length; i++)
             {
                 _lst[i] = new LinkedList<KeyValuePair<TKey, TValue>>();
             }
@@ -39,7 +38,7 @@ namespace Task1.CustomDictionary
         {
             get
             {
-                int hash = Math.Abs(key.GetHashCode()) % _capacity;
+                int hash = Math.Abs(key.GetHashCode()) % _lst.Length;
                 if (_lst[hash].Count != 0)
                 {
                     foreach (var item in _lst[hash])
@@ -54,7 +53,7 @@ namespace Task1.CustomDictionary
             }
             set
             {
-                int hash = Math.Abs(key.GetHashCode()) % _capacity;
+                int hash = Math.Abs(key.GetHashCode()) % _lst.Length;
                 if (_lst[hash].Count != 0)
                 {
                     var temp = new KeyValuePair<TKey, TValue>();
@@ -73,34 +72,38 @@ namespace Task1.CustomDictionary
 
         public void Add(TKey key, TValue value)
         {
-            int hash = Math.Abs(key.GetHashCode()) % _capacity;
+            int hash = Math.Abs(key.GetHashCode()) % _lst.Length;
             
-            if (_capacity - _count == 0)
+            if (_count * 3 > _lst.Length)
             {
-                _capacity *= 2;
-                LinkedList<KeyValuePair<TKey, TValue>>[] temp = new LinkedList<KeyValuePair<TKey, TValue>>[_capacity];
-                for (int i = 0; i < _capacity; i++)
-                {
-                    temp[i] = new LinkedList<KeyValuePair<TKey, TValue>>();
-                }
+                int tempCapacity = _lst.Length * 3;
+                LinkedList<KeyValuePair<TKey, TValue>>[] temp = new LinkedList<KeyValuePair<TKey, TValue>>[tempCapacity];
                 foreach (var linkList in _lst)
                 {
                     foreach (var item in linkList)
                     {
-                        int hashLoc = Math.Abs(item.Key.GetHashCode()) % _capacity;
+                        int hashLoc = Math.Abs(item.Key.GetHashCode()) % tempCapacity;
+                        if (temp[hashLoc] == null)
+                        {
+                            temp[hashLoc] = new LinkedList<KeyValuePair<TKey, TValue>>();
+                        }
                         temp[hashLoc].AddLast(item);
                     }
                 }
-                hash = Math.Abs(key.GetHashCode()) % _capacity;
+                hash = Math.Abs(key.GetHashCode()) % tempCapacity;
                 _lst = temp;
             }
             if (_keys.Contains(key))
             {
-                throw new Exception("Dictionory alredy have this key!");
+                throw new ArgumentException("Dictionory alredy have this key!");
             }
             else
             {
                 var temp = new KeyValuePair<TKey, TValue>(key, value);
+                if (_lst[hash] == null)
+                {
+                    _lst[hash] = new LinkedList<KeyValuePair<TKey, TValue>>();
+                }
                 _lst[hash].AddLast(temp);
                 _keys.Add(key);
                 _values.Add(value);
@@ -117,7 +120,6 @@ namespace Task1.CustomDictionary
         {
             _keys = new List<TKey>();
             _values = new List<TValue>();
-            _capacity = 4;
             _lst = new LinkedList<KeyValuePair<TKey, TValue>>[4];
             _count = 0;
             
@@ -125,7 +127,7 @@ namespace Task1.CustomDictionary
 
         public bool Contains(KeyValuePair<TKey, TValue> pair)
         {
-            int hash = Math.Abs(pair.Key.GetHashCode()) % _capacity;
+            int hash = Math.Abs(pair.Key.GetHashCode()) % _lst.Length;
             if (_lst[hash].Count != 0)
             {
                 return true;
@@ -172,18 +174,21 @@ namespace Task1.CustomDictionary
 
         public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
         {
-            for (int i = 0; i < _capacity; i++)
+            for (int i = 0; i < _lst.Length; i++)
             {
-                foreach (var item in _lst[i])
+                if (_lst[i] != null)
                 {
-                    yield return item;
+                    foreach (var item in _lst[i])
+                    {
+                        yield return item;
+                    }
                 }
             }
         }
 
         public bool Remove(KeyValuePair<TKey, TValue> pair)
         {
-            int hash = Math.Abs(pair.Key.GetHashCode()) % _capacity;
+            int hash = Math.Abs(pair.Key.GetHashCode()) % _lst.Length;
             if (_lst[hash].Count == 0)
             {
                 return false;
@@ -206,7 +211,7 @@ namespace Task1.CustomDictionary
 
         public bool Remove(TKey key)
         {
-            int hash = Math.Abs(key.GetHashCode()) % _capacity;
+            int hash = Math.Abs(key.GetHashCode()) % _lst.Length;
             if (_lst[hash].Count == 0)
             {
                 return false;
@@ -235,7 +240,7 @@ namespace Task1.CustomDictionary
 
         public bool TryGetValue(TKey key, [MaybeNullWhen(false)] out TValue value)
         {
-            int hash = Math.Abs(key.GetHashCode()) % _capacity;
+            int hash = Math.Abs(key.GetHashCode()) % _lst.Length;
             if (_lst[hash].Count == 0)
             {
                 value = default;
