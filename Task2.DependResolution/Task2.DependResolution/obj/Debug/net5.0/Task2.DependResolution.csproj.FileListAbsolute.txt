@@ -1,0 +1,16 @@
+C:\Users\denzi\source\repos\Task2.DependResolution\Task2.DependResolution\bin\Debug\net5.0\Task2.DependResolution.exe
+C:\Users\denzi\source\repos\Task2.DependResolution\Task2.DependResolution\bin\Debug\net5.0\Task2.DependResolution.deps.json
+C:\Users\denzi\source\repos\Task2.DependResolution\Task2.DependResolution\bin\Debug\net5.0\Task2.DependResolution.runtimeconfig.json
+C:\Users\denzi\source\repos\Task2.DependResolution\Task2.DependResolution\bin\Debug\net5.0\Task2.DependResolution.runtimeconfig.dev.json
+C:\Users\denzi\source\repos\Task2.DependResolution\Task2.DependResolution\bin\Debug\net5.0\Task2.DependResolution.dll
+C:\Users\denzi\source\repos\Task2.DependResolution\Task2.DependResolution\bin\Debug\net5.0\ref\Task2.DependResolution.dll
+C:\Users\denzi\source\repos\Task2.DependResolution\Task2.DependResolution\bin\Debug\net5.0\Task2.DependResolution.pdb
+C:\Users\denzi\source\repos\Task2.DependResolution\Task2.DependResolution\obj\Debug\net5.0\Task2.DependResolution.csproj.AssemblyReference.cache
+C:\Users\denzi\source\repos\Task2.DependResolution\Task2.DependResolution\obj\Debug\net5.0\Task2.DependResolution.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\denzi\source\repos\Task2.DependResolution\Task2.DependResolution\obj\Debug\net5.0\Task2.DependResolution.AssemblyInfoInputs.cache
+C:\Users\denzi\source\repos\Task2.DependResolution\Task2.DependResolution\obj\Debug\net5.0\Task2.DependResolution.AssemblyInfo.cs
+C:\Users\denzi\source\repos\Task2.DependResolution\Task2.DependResolution\obj\Debug\net5.0\Task2.DependResolution.csproj.CoreCompileInputs.cache
+C:\Users\denzi\source\repos\Task2.DependResolution\Task2.DependResolution\obj\Debug\net5.0\Task2.DependResolution.dll
+C:\Users\denzi\source\repos\Task2.DependResolution\Task2.DependResolution\obj\Debug\net5.0\ref\Task2.DependResolution.dll
+C:\Users\denzi\source\repos\Task2.DependResolution\Task2.DependResolution\obj\Debug\net5.0\Task2.DependResolution.pdb
+C:\Users\denzi\source\repos\Task2.DependResolution\Task2.DependResolution\obj\Debug\net5.0\Task2.DependResolution.genruntimeconfig.cache
